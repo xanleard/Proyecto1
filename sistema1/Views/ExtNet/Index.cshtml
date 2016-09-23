@@ -1,0 +1,50 @@
+@using Ext.Net;
+@using Ext.Net.MVC;
+
+@model sistema1.Models.ExtNetModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<body>
+    @(Html.X().ResourceManager())
+
+   
+    
+    @using (Html.BeginForm()) {
+    
+        @(Html.X().Panel()
+            .Title(Model.Title)
+            .Height(215)
+            .Width(350)
+            .Frame(true)
+            .Collapsible(true)
+            .Cls("box")
+            .BodyPadding(5)
+            .DefaultButton("Button1")
+            .Layout(LayoutType.Anchor)
+            .DefaultAnchor("100%")
+            .Items(Html.X().TextArea()
+                .Name("message")
+                .EmptyText(Model.TextAreaEmptyText)
+                .FieldLabel("ACCION")
+                .Height(85)
+            )
+            .Buttons(Html.X().Button()
+                .ID("Button1")
+                .Text("CREAR")
+                .Icon(Icon.Accept)
+                .DirectClickAction("SampleAction")
+            )
+        )
+        
+    }
+
+   
+</body>
+</html>

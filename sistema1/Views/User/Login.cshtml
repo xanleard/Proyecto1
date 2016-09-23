@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = null;
+    var X = Html.X();
+
+
+    }
+
+
+    @section Scripts{
+        <script>
+            var login = function () {
+
+                var user= Ext.getCmp("txtUsername");
+                var password=Ext.getCmp("txtPassword");
+                if (user.value == "admin" && password.value == "123") {
+                   // Ext.getCmp("Window1").setHidden(true);
+                    //getView();
+                } else {
+                   new Ext.window.MessageBox({ui:'danger'}).alert("Error","La Contraseña para el usuario "+user.value+" es incorrecta")
+                }
+                var getView = function () {
+                    var optionsMeasurementDetails = {
+                        eventMask: {
+                            showMask: true,
+                            target: 'customtarget',
+                            customTarget: App.Window1
+                        },
+                        url: '@(Url.Action("returnview"))',
+                        encode: false,
+                        recursive: true,
+                        success: function (data) {
+
+                        }
+                    }
+                    Ext.net.DirectMethod.request('returnview', optionsMeasurementDetails);
+                }
+
+
+
+            }
+
+
+
+
+        </script>
+        
+        
+        }
+@(X.ResourceManager())
+    @(
+    X.Viewport()
+    .Layout(LayoutType.Absolute)
+    .Bin(X.Hidden().UI(UI.Primary)).Items(
+        X.Window()
+            .ID("Window1")
+            .Closable(false)
+            .Resizable(false)
+            .Height(200)
+            .Icon(Icon.Lock)
+            .Title("Login")
+            .Draggable(true)
+            .Width(350)
+            .Modal(false)
+            .BodyPadding(5)
+            .Layout(LayoutType.Form)
+            .AutoEl(el =>
+            {
+                el.Tag = HtmlTextWriterTag.Form;
+                el.CustomConfig.Add(new ConfigItem()
+                {
+                    Name = "method",
+                    Value = "POST",
+                    Mode = ParameterMode.Value
+                });
+                el.CustomConfig.Add(new ConfigItem()
+                {
+                    Name = "action",
+                    Value = "../../Desktop/Overview/Desktop",
+                    Mode = ParameterMode.Value
+                });
+            })
+            .Items(
+            X.Toolbar(),
+
+                X.TextField()
+                    .ID("txtUsername")
+                    .Name("username")
+                    .Icon(Icon.User)
+                    .FieldLabel("Username")
+                    .AllowBlank(false)
+                    .BlankText("Your username is required"),
+                X.TextField()
+                    .ID("txtPassword")
+                    
+                    .Name("password")
+                    .InputType(Ext.Net.InputType.Password)
+                    .FieldLabel("Password :")
+                    .Icon(Icon.Key)
+                    .AllowBlank(false)
+                    .BlankText("Your password is required"),
+                X.Toolbar()
+            )
+            .Buttons(
+                X.Button()
+                    .Text("Login")
+                    .Icon(Icon.LockOpen)
+                    .FormBind(true)
+                    .Listeners(L=>{ L.Click.Handler = "login()"; })
+                    //.Handler("handleClientClick")
+                    .DirectEvents(de =>
+                    {
+                        //de.Click.Url = Url.Action("Button1_Click");
+                        //de.Click.Success = "handleLogin";
+                        // de.Click.Failure = "invalidateLogin(result.errorMessage);";
+                        de.Click.ShowWarningOnFailure = false;
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Verifying...";
+                        de.Click.EventMask.MinDelay = 1000;
+
+                        //de.Click.ExtraParams.Add(new Parameter("user", "App.txtUsername.value", ParameterMode.Raw));
+                        //de.Click.ExtraParams.Add(new Parameter("pass", "App.txtPassword.value", ParameterMode.Raw));
+                    })
+            )
+    )
+    )
+@*}*@
